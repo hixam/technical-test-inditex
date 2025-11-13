@@ -1,6 +1,7 @@
 package com.hicham.technicaltestinditex.unit.domain.model;
 
-import com.hicham.technicaltestinditex.domain.model.*;
+import com.hicham.technicaltestinditex.domain.entity.Price;
+import com.hicham.technicaltestinditex.domain.valueObject.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -26,16 +27,16 @@ class PriceTest {
         );
 
         // When
-        Price price = Price.builder()
-                .id(id)
-                .brandId(brandId)
-                .productId(productId)
-                .priceRange(priceRange)
-                .priceList(1)
-                .priority(0)
-                .price(new BigDecimal("35.50"))
-                .currency("EUR")
-                .build();
+        Price price = Price.of(
+                (id),
+                (brandId),
+                (productId),
+                (priceRange),
+                (1),
+                (0),
+                (new BigDecimal("35.50")),
+                ("EUR")
+        );
 
         // Then
         assertThat(price).isNotNull();
@@ -103,18 +104,18 @@ class PriceTest {
     @DisplayName("Should throw exception when brand ID is null")
     void shouldThrowExceptionWhenBrandIdIsNull() {
         assertThatThrownBy(() ->
-                Price.builder()
-                        .brandId(null)
-                        .productId(ProductId.of(35455L))
-                        .priceRange(PriceRange.of(
+                Price.of(
+                        PriceId.of(123L),
+                        (null),
+                        (ProductId.of(35455L)),
+                        (PriceRange.of(
                                 LocalDateTime.of(2020, 6, 14, 0, 0),
                                 LocalDateTime.of(2020, 12, 31, 23, 59)
-                        ))
-                        .priceList(1)
-                        .priority(0)
-                        .price(new BigDecimal("35.50"))
-                        .currency("EUR")
-                        .build()
+                        )),
+                        (1),
+                        (0),
+                        (new BigDecimal("35.50")),
+                        ("EUR"))
         ).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Brand ID cannot be null");
     }
@@ -123,18 +124,19 @@ class PriceTest {
     @DisplayName("Should throw exception when price is zero or negative")
     void shouldThrowExceptionWhenPriceIsInvalid() {
         assertThatThrownBy(() ->
-                Price.builder()
-                        .brandId(BrandId.of(1L))
-                        .productId(ProductId.of(35455L))
-                        .priceRange(PriceRange.of(
+                Price.of(
+                        PriceId.of(1L),
+                        BrandId.of(1L),
+                        ProductId.of(35455L),
+                        PriceRange.of(
                                 LocalDateTime.of(2020, 6, 14, 0, 0),
                                 LocalDateTime.of(2020, 12, 31, 23, 59)
-                        ))
-                        .priceList(1)
-                        .priority(0)
-                        .price(BigDecimal.ZERO)
-                        .currency("EUR")
-                        .build()
+                        ),
+                        1,                      // priceList
+                        0,                      // priority
+                        BigDecimal.ZERO,        // invalid price
+                        "EUR"
+                )
         ).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Price must be greater than zero");
     }
@@ -168,16 +170,16 @@ class PriceTest {
     }
 
     private Price createTestPrice(LocalDateTime startDate, LocalDateTime endDate) {
-        return Price.builder()
-                .id(PriceId.of(1L))
-                .brandId(BrandId.of(1L))
-                .productId(ProductId.of(35455L))
-                .priceRange(PriceRange.of(startDate, endDate))
-                .priceList(1)
-                .priority(0)
-                .price(new BigDecimal("35.50"))
-                .currency("EUR")
-                .build();
+        return Price.of(
+                (PriceId.of(1L)),
+                (BrandId.of(1L)),
+                (ProductId.of(35455L)),
+                (PriceRange.of(startDate, endDate)),
+                (1),
+                (0),
+                (new BigDecimal("35.50")),
+                ("EUR")
+                );
     }
 }
 

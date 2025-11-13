@@ -1,19 +1,16 @@
-package com.hicham.technicaltestinditex.domain.model;
+package com.hicham.technicaltestinditex.domain.valueObject;
 
 import lombok.Value;
 
 /**
  * Value Object representing a Brand identifier.
  */
-@Value
-public class BrandId {
-    Long value;
+public record BrandId(Long value) {
 
-    public BrandId(Long value) {
+    public BrandId {
         if (value == null || value <= 0) {
             throw new IllegalArgumentException("Brand ID must be a positive number");
         }
-        this.value = value;
     }
 
     public static BrandId of(Long value) {

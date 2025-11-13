@@ -1,19 +1,16 @@
-package com.hicham.technicaltestinditex.domain.model;
+package com.hicham.technicaltestinditex.domain.valueObject;
 
 import lombok.Value;
 
 /**
  * Value Object representing a Price identifier.
  */
-@Value
-public class PriceId {
-    Long value;
+public record PriceId(Long value) {
 
-    public PriceId(Long value) {
+    public PriceId {
         if (value == null || value <= 0) {
             throw new IllegalArgumentException("Price ID must be a positive number");
         }
-        this.value = value;
     }
 
     public static PriceId of(Long value) {

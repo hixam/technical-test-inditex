@@ -1,9 +1,9 @@
 package com.hicham.technicaltestinditex.infrastructure.adapter.out.persistence;
 
-import com.hicham.technicaltestinditex.domain.model.BrandId;
-import com.hicham.technicaltestinditex.domain.model.Price;
-import com.hicham.technicaltestinditex.domain.model.ProductId;
-import com.hicham.technicaltestinditex.domain.port.out.PriceRepositoryPort;
+import com.hicham.technicaltestinditex.domain.valueObject.BrandId;
+import com.hicham.technicaltestinditex.domain.entity.Price;
+import com.hicham.technicaltestinditex.domain.valueObject.ProductId;
+import com.hicham.technicaltestinditex.application.port.out.PriceRepositoryPort;
 import com.hicham.technicaltestinditex.infrastructure.adapter.out.persistence.entity.PriceEntity;
 import com.hicham.technicaltestinditex.infrastructure.adapter.out.persistence.mapper.PriceEntityMapper;
 import com.hicham.technicaltestinditex.infrastructure.adapter.out.persistence.repository.PriceJpaRepository;
@@ -29,8 +29,8 @@ public class PricePersistenceAdapter implements PriceRepositoryPort {
     public List<Price> findApplicablePrices(LocalDateTime applicationDate, ProductId productId, BrandId brandId) {
         List<PriceEntity> entities = priceJpaRepository
                 .findByBrandIdAndProductIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(
-                        brandId.getValue(),
-                        productId.getValue(),
+                        brandId.value(),
+                        productId.value(),
                         applicationDate,
                         applicationDate
                 );

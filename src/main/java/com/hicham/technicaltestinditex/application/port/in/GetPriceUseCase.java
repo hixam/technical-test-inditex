@@ -1,7 +1,7 @@
 package com.hicham.technicaltestinditex.application.port.in;
 
-import com.hicham.technicaltestinditex.application.dto.PriceQueryRequest;
-import com.hicham.technicaltestinditex.application.dto.PriceResponse;
+import com.hicham.technicaltestinditex.application.query.GetPriceQuery;
+import com.hicham.technicaltestinditex.domain.entity.Price;
 
 /**
  * Input port for the get price use case.
@@ -16,6 +16,6 @@ public interface GetPriceUseCase {
      * @return the applicable price response
      * @throws com.hicham.technicaltestinditex.application.exception.PriceNotFoundException if no applicable price is found
      */
-    PriceResponse getPrice(PriceQueryRequest request);
+    Price getPrice(GetPriceQuery request);
 }
 

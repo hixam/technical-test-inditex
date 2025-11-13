@@ -1,8 +1,8 @@
-package com.hicham.technicaltestinditex.domain.port.out;
+package com.hicham.technicaltestinditex.application.port.out;
 
-import com.hicham.technicaltestinditex.domain.model.BrandId;
-import com.hicham.technicaltestinditex.domain.model.Price;
-import com.hicham.technicaltestinditex.domain.model.ProductId;
+import com.hicham.technicaltestinditex.domain.valueObject.BrandId;
+import com.hicham.technicaltestinditex.domain.entity.Price;
+import com.hicham.technicaltestinditex.domain.valueObject.ProductId;
 
 import java.time.LocalDateTime;
 import java.util.List;

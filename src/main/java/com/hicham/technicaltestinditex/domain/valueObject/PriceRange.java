@@ -1,4 +1,4 @@
-package com.hicham.technicaltestinditex.domain.model;
+package com.hicham.technicaltestinditex.domain.valueObject;
 
 import lombok.Value;
 
@@ -7,20 +7,15 @@ import java.time.LocalDateTime;
 /**
  * Value Object representing a date range for price validity.
  */
-@Value
-public class PriceRange {
-    LocalDateTime startDate;
-    LocalDateTime endDate;
+public record PriceRange(LocalDateTime startDate, LocalDateTime endDate) {
 
-    public PriceRange(LocalDateTime startDate, LocalDateTime endDate) {
+    public PriceRange {
         if (startDate == null || endDate == null) {
             throw new IllegalArgumentException("Start date and end date cannot be null");
         }
         if (startDate.isAfter(endDate)) {
             throw new IllegalArgumentException("Start date cannot be after end date");
         }
-        this.startDate = startDate;
-        this.endDate = endDate;
     }
 
     public static PriceRange of(LocalDateTime startDate, LocalDateTime endDate) {

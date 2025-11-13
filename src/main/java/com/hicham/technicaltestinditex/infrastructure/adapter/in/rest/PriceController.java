@@ -1,10 +1,11 @@
 package com.hicham.technicaltestinditex.infrastructure.adapter.in.rest;
 
-import com.hicham.technicaltestinditex.application.dto.PriceQueryRequest;
-import com.hicham.technicaltestinditex.application.dto.PriceResponse;
+import com.hicham.technicaltestinditex.application.query.GetPriceQuery;
 import com.hicham.technicaltestinditex.application.port.in.GetPriceUseCase;
+import com.hicham.technicaltestinditex.domain.entity.Price;
+import com.hicham.technicaltestinditex.domain.valueObject.BrandId;
+import com.hicham.technicaltestinditex.domain.valueObject.ProductId;
 import com.hicham.technicaltestinditex.infrastructure.adapter.in.rest.dto.ErrorResponseDto;
-import com.hicham.technicaltestinditex.infrastructure.adapter.in.rest.dto.PriceQueryRequestDto;
 import com.hicham.technicaltestinditex.infrastructure.adapter.in.rest.dto.PriceResponseDto;
 import com.hicham.technicaltestinditex.infrastructure.adapter.in.rest.mapper.PriceRestMapper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,12 +15,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -118,13 +117,12 @@ public class PriceController {
             @Positive(message = "Brand ID must be positive")
             Long brandId
     ) {
-        PriceQueryRequest request = PriceQueryRequest.builder()
-                .applicationDate(applicationDate)
-                .productId(productId)
-                .brandId(brandId)
-                .build();
+        GetPriceQuery request = new GetPriceQuery(
+                ProductId.of(productId),
+                BrandId.of(brandId),
+                applicationDate);
 
-        PriceResponse response = getPriceUseCase.getPrice(request);
+        Price response = getPriceUseCase.getPrice(request);
         PriceResponseDto dto = priceRestMapper.toRestResponse(response);
 
         return ResponseEntity.ok(dto);

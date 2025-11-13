@@ -1,11 +1,11 @@
 package com.hicham.technicaltestinditex.unit.application.service;
 
-import com.hicham.technicaltestinditex.application.dto.PriceQueryRequest;
-import com.hicham.technicaltestinditex.application.dto.PriceResponse;
+import com.hicham.technicaltestinditex.application.query.GetPriceQuery;
 import com.hicham.technicaltestinditex.application.exception.PriceNotFoundException;
 import com.hicham.technicaltestinditex.application.service.PriceService;
-import com.hicham.technicaltestinditex.domain.model.*;
-import com.hicham.technicaltestinditex.domain.port.out.PriceRepositoryPort;
+import com.hicham.technicaltestinditex.domain.entity.Price;
+import com.hicham.technicaltestinditex.domain.valueObject.*;
+import com.hicham.technicaltestinditex.application.port.out.PriceRepositoryPort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,15 +35,15 @@ class PriceServiceTest {
     @InjectMocks
     private PriceService priceService;
 
-    private PriceQueryRequest request;
+    private GetPriceQuery request;
 
     @BeforeEach
     void setUp() {
-        request = PriceQueryRequest.builder()
-                .applicationDate(LocalDateTime.of(2020, 6, 14, 10, 0))
-                .productId(35455L)
-                .brandId(1L)
-                .build();
+        request = new GetPriceQuery(
+                ProductId.of(35455L),
+                BrandId.of(1L),
+                LocalDateTime.of(2020, 6, 14, 10, 0)
+        );
     }
 
     @Test
@@ -71,7 +71,7 @@ class PriceServiceTest {
                 .thenReturn(List.of(price));
 
         // When
-        PriceResponse response = priceService.getPrice(request);
+        Price response = priceService.getPrice(request);
 
         // Then
         assertThat(response).isNotNull();
@@ -97,14 +97,14 @@ class PriceServiceTest {
         when(priceRepositoryPort.findApplicablePrices(any(), any(), any()))
                 .thenReturn(Arrays.asList(lowPriorityPrice, highPriorityPrice));
 
-        PriceQueryRequest afternoonRequest = PriceQueryRequest.builder()
-                .applicationDate(LocalDateTime.of(2020, 6, 14, 16, 0))
-                .productId(35455L)
-                .brandId(1L)
-                .build();
+        GetPriceQuery afternoonRequest = new GetPriceQuery(
+                ProductId.of(35455L),
+                BrandId.of(1L),
+                LocalDateTime.of(2020, 6, 14, 16, 0)
+        );
 
         // When
-        PriceResponse response = priceService.getPrice(afternoonRequest);
+        Price response = priceService.getPrice(afternoonRequest);
 
         // Then
         assertThat(response).isNotNull();
@@ -133,11 +133,11 @@ class PriceServiceTest {
     @DisplayName("Should throw exception when brand ID is invalid")
     void shouldThrowExceptionWhenBrandIdIsInvalid() {
         // Given
-        PriceQueryRequest invalidRequest = PriceQueryRequest.builder()
-                .applicationDate(LocalDateTime.of(2020, 6, 14, 10, 0))
-                .productId(35455L)
-                .brandId(-1L)
-                .build();
+        GetPriceQuery invalidRequest = new GetPriceQuery(
+                ProductId.of(35455L),
+                BrandId.of(-1L),
+                LocalDateTime.of(2020, 6, 14, 10, 0)
+        );
 
         // When & Then
         assertThatThrownBy(() -> priceService.getPrice(invalidRequest))
@@ -147,16 +147,16 @@ class PriceServiceTest {
 
     private Price createPrice(Integer priceList, Integer priority, String priceValue,
                               LocalDateTime startDate, LocalDateTime endDate) {
-        return Price.builder()
-                .id(PriceId.of(1L))
-                .brandId(BrandId.of(1L))
-                .productId(ProductId.of(35455L))
-                .priceRange(PriceRange.of(startDate, endDate))
-                .priceList(priceList)
-                .priority(priority)
-                .price(new BigDecimal(priceValue))
-                .currency("EUR")
-                .build();
+        return new Price(
+                (PriceId.of(1L)),
+                (BrandId.of(1L)),
+                (ProductId.of(35455L)),
+                (PriceRange.of(startDate, endDate)),
+                (priceList),
+                (priority),
+                (new BigDecimal(priceValue)),
+                ("EUR")
+        );
     }
 }
 

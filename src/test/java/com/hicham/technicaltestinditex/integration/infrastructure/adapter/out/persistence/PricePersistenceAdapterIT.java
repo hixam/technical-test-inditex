@@ -1,8 +1,8 @@
 package com.hicham.technicaltestinditex.integration.infrastructure.adapter.out.persistence;
 
-import com.hicham.technicaltestinditex.domain.model.BrandId;
-import com.hicham.technicaltestinditex.domain.model.Price;
-import com.hicham.technicaltestinditex.domain.model.ProductId;
+import com.hicham.technicaltestinditex.domain.valueObject.BrandId;
+import com.hicham.technicaltestinditex.domain.entity.Price;
+import com.hicham.technicaltestinditex.domain.valueObject.ProductId;
 import com.hicham.technicaltestinditex.infrastructure.adapter.out.persistence.PricePersistenceAdapter;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -48,8 +48,8 @@ class PricePersistenceAdapterIT {
         // Then
         assertThat(prices).isNotEmpty();
         assertThat(prices).hasSize(1);
-        assertThat(prices.get(0).getProductId().getValue()).isEqualTo(35455L);
-        assertThat(prices.get(0).getBrandId().getValue()).isEqualTo(1L);
+        assertThat(prices.get(0).getProductId().value()).isEqualTo(35455L);
+        assertThat(prices.get(0).getBrandId().value()).isEqualTo(1L);
     }
 
     @Test
